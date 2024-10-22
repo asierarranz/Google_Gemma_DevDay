@@ -56,3 +56,33 @@ The code is very straightforward to run. It's essentially a Python script with t
 ### Assets
 
 There is an `assets` folder containing two `.wav` files (beeps) that signal when you can start and stop speaking. These beeps are used because the home assistant does not implement silence detection. The purpose of this code is to show how a minimal home assistant can be built with just a few lines of code.
+
+### Assets
+
+There is an `assets` folder containing two `.wav` files (beeps) that signal when you can start and stop speaking. These beeps are used because the home assistant does not implement silence detection. The purpose of this code is to show how a minimal home assistant can be built with just a few lines of code.
+
+## Directory Structure
+
+The project is organized as follows:
+
+```
+GEMMALLAMA/
+│
+├── assets/
+│   ├── bip.wav      # Sound file to indicate the start of a recording
+│   └── bip2.wav     # Sound file to indicate the end of a recording
+│
+├── npcs/
+│   └── conversation_log.html  # Directory where NPC conversations will be stored in HTML format
+│
+├── assistant.py     # Script for the Home Assistant demo, using Whisper, FAISS, and Piper
+├── npcservers.py    # Script for the multi-agent system demo, where two Gemma instances interact
+└── translate.py     # Script for the translation assistant demo, using Whisper and Coqui TTS
+```
+
+- **assets/**: Contains audio files (`bip.wav`, `bip2.wav`) used to indicate when recording starts and ends.
+- **npcs/**: This folder stores conversation logs in HTML format. For example, when two NPCs (Gemma and Gemmo) converse, their dialogue is saved here.
+- **assistant.py**: Implements a voice-activated assistant using Whisper for transcription, FAISS for retrieval, and Piper for text-to-speech.
+- **npcservers.py**: Simulates conversations between two LLaMA-based agents (Gemma and Gemmo) with different personalities.
+- **translate.py**: Translates speech from English to Japanese using Whisper and Coqui TTS for speech synthesis.
+
