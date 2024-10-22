@@ -1,6 +1,9 @@
 # Gemma 2 on Jetson Orin Nano - Google Dev Day Tokyo Demos
 
-If you have a Jetson Orin Nano and want to use Gemma 2, my talk at the Google Gemma 2 Dev Day in Tokyo explains everything from scratch to running any of these codes step by step in a very simple way. Here’s the video where I explain it all:
+If you're working with a Jetson Orin Nano and want to explore the power of **Gemma 2**, this repository provides three easy to follow demos showcasing how to run a Small Language Model (SLM) with 2 billion parameters on this device. In my talk at the **Google Gemma 2 Dev Day in Tokyo**, I covered everything step-by-step, from setting up the device to running these demos efficiently. For a complete walkthrough, check out the video below.
+
+## YouTube Video
+This video offers a detailed guide on setting up **Gemma 2** on the Jetson Orin Nano, covering installation, configuration, and execution of the demos. Watch it to get a better understanding of how to replicate the steps on your device:
 
 [![Watch the video](https://img.youtube.com/vi/Kd7VJ-TKb8I/maxresdefault.jpg)](https://www.youtube.com/watch?v=Kd7VJ-TKb8I)
 
