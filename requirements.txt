@@ -2,8 +2,6 @@ whisper
 requests
 sounddevice
 numpy
-tempfile
-wave
 faiss-cpu
 sentence-transformers
 TTS
