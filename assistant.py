@@ -14,8 +14,9 @@ whisper_model = whisper.load_model("base").to(device)
 llama_url = "http://127.0.0.1:8080/completion"
 
 # Initial prompt to guide the LLaMA model's behavior
-initial_prompt = ("You're a language tutor specialized in teaching Spanish to beginners and advanced learners." "Provide explanations of grammar, vocabulary, and common expressions." "Help with pronunciation and sentence construction, offering tips for practicing and improving fluency. Keep responses clear and easy to understand." "Do not use asterisks, do not ask new questions ""or act as the user. Keep replies short to speed up inference. If unsure, admit it and suggest looking into it further.")
-
+initial_prompt = ("You're an AI assistant specialized in AI development, embedded systems like the Jetson Nano, and Google technologies. "
+                  "Answer questions clearly and concisely in a friendly, professional tone. Do not use asterisks, do not ask new questions "
+                  "or act as the user. Keep replies short to speed up inference. If unsure, admit it and suggest looking into it further.")
 
 # Current directory and path for beep sound files (used to indicate recording start and end)
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -23,8 +24,10 @@ bip_sound = os.path.join(current_dir, "assets/bip.wav")
 bip2_sound = os.path.join(current_dir, "assets/bip2.wav")
 
 # Documents to be used in Retrieval-Augmented Generation (RAG)
-docs = ["In Spanish, verbs are conjugated based on tense, mood, and subject. For example, 'hablar' (to speak) becomes 'hablo' (I speak) in the present tense.",
-"Common Spanish phrases for beginners include 'Hola' (Hello), '¿Cómo estás?' (How are you?), and 'Gracias' (Thank you).", "The Spanish language has gendered nouns, where words like 'libro' (book) are masculine, and 'mesa' (table) are feminine."
+docs = [
+    "The Jetson Nano is a compact, powerful computer designed by NVIDIA for AI applications at the edge.",
+    "Developers can create AI assistants in under 100 lines of Python code using open-source libraries.",
+    "Retrieval Augmented Generation enhances AI responses by combining language models with external knowledge bases.",
 ]
 
 
