@@ -1,20 +1,21 @@
 import whisper, requests, os, sounddevice as sd, numpy as np, tempfile, wave
 import faiss
 from sentence_transformers import SentenceTransformer
+import torch
 
-# Load sentence transformer model for document embeddings
-embedding_model = SentenceTransformer('/home/asier/models')
+# Optimization: Use a more efficient embedding model for Jetson Orin Nano
+embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Load Whisper model for speech-to-text
-whisper_model = whisper.load_model("tiny")
+# Optimization: Explicitly use CUDA if available, with fallback to CPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+whisper_model = whisper.load_model("base").to(device)
 
-# LLaMA server URL for completion (Gemma 2 is running here)
+# Configuration for local LLM server
 llama_url = "http://127.0.0.1:8080/completion"
 
 # Initial prompt to guide the LLaMA model's behavior
-initial_prompt = ("You're an AI assistant specialized in AI development, embedded systems like the Jetson Nano, and Google technologies. "
-                  "Answer questions clearly and concisely in a friendly, professional tone. Do not use asterisks, do not ask new questions "
-                  "or act as the user. Keep replies short to speed up inference. If unsure, admit it and suggest looking into it further.")
+initial_prompt = ("You're a language tutor specialized in teaching Spanish to beginners and advanced learners." "Provide explanations of grammar, vocabulary, and common expressions." "Help with pronunciation and sentence construction, offering tips for practicing and improving fluency. Keep responses clear and easy to understand." "Do not use asterisks, do not ask new questions ""or act as the user. Keep replies short to speed up inference. If unsure, admit it and suggest looking into it further.")
+
 
 # Current directory and path for beep sound files (used to indicate recording start and end)
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -22,11 +23,10 @@ bip_sound = os.path.join(current_dir, "assets/bip.wav")
 bip2_sound = os.path.join(current_dir, "assets/bip2.wav")
 
 # Documents to be used in Retrieval-Augmented Generation (RAG)
-docs = [
-    "The Jetson Nano is a compact, powerful computer designed by NVIDIA for AI applications at the edge.",
-    "Developers can create AI assistants in under 100 lines of Python code using open-source libraries.",
-    "Retrieval Augmented Generation enhances AI responses by combining language models with external knowledge bases.",
+docs = ["In Spanish, verbs are conjugated based on tense, mood, and subject. For example, 'hablar' (to speak) becomes 'hablo' (I speak) in the present tense.",
+"Common Spanish phrases for beginners include 'Hola' (Hello), '¿Cómo estás?' (How are you?), and 'Gracias' (Thank you).", "The Spanish language has gendered nouns, where words like 'libro' (book) are masculine, and 'mesa' (table) are feminine."
 ]
+
 
 # Vector Database class to handle document embedding and search using FAISS
 class VectorDatabase:
@@ -51,21 +51,15 @@ class VectorDatabase:
 db = VectorDatabase(dim=384)
 db.add_documents(docs)
 
-# Find the device for audio recording by matching part of the device name
-def find_device(device_name_substring):
-    for i, device in enumerate(sd.query_devices()):
-        if device_name_substring.lower() in device['name'].lower():
-            return i
-    raise ValueError(f"Device with name '{device_name_substring}' not found")
-
 # Play sound (beep) to signal recording start/stop
 def play_sound(sound_file):
     os.system(f"aplay {sound_file}")
 
 # Record audio using sounddevice, save it as a .wav file
 def record_audio(filename, duration=5, fs=16000):
-    sd.default.device = find_device("920")  # Use the audio input device (I have a Logitech 920, that's why, modify as needed)
+    
     play_sound(bip_sound)  # Start beep
+    print("5 seconds recording started...")
     audio = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='int16')
     sd.wait()  # Wait for the recording to complete
     with wave.open(filename, 'wb') as wf:
@@ -74,6 +68,7 @@ def record_audio(filename, duration=5, fs=16000):
         wf.setframerate(fs)
         wf.writeframes(audio.tobytes())
     play_sound(bip2_sound)  # End beep
+    print("recording completed")
 
 # Transcribe recorded audio to text using Whisper
 def transcribe_audio(filename):
@@ -99,7 +94,7 @@ def rag_ask(query):
 
 # Convert text to speech using Piper TTS model
 def text_to_speech(text):
-    os.system(f'echo "{text}" | /home/asier/piper/build/piper --model /usr/local/share/piper/models/en-us-lessac-medium.onnx --output_file response.wav && aplay response.wav')
+    os.system(f'echo "{text}" | /home/orin_nano/piper/build/piper --model /usr/local/share/piper/models/en_US-lessac-medium.onnx --output_file response.wav && aplay response.wav')
 
 # Main loop for the assistant
 def main():
