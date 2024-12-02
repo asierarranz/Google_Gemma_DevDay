@@ -1,6 +1,6 @@
 openai-whisper
 requests
 sounddevice
-numpy
+numpy==1.24.4
 faiss-cpu
 sentence-transformers
