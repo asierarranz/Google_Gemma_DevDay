@@ -1,6 +1,79 @@
-# Gemma 2 on Jetson Orin Nano - Google Dev Day Tokyo Demos
+# Gemma 3 on NVIDIA RTX & Jetson – Powered by Ollama
 
-If you're working with a Jetson Orin Nano and want to explore the power of **Gemma 2**, this repository provides three easy to follow demos showcasing how to run a Small Language Model (SLM) with 2 billion parameters on this device. In my talk at the **Google Gemma 2 Dev Day in Tokyo**, I covered everything step-by-step, from setting up the device to running these demos efficiently. For a complete walkthrough, check out the video below.
+Google’s latest open model family, **Gemma 3**, is now available on **Ollama**, with optimized performance for **NVIDIA RTX GPUs** and **Jetson edge devices**.
+
+With model sizes ranging from **1B** to **27B parameters**, Gemma 3 brings:
+
+- **Multimodal capabilities** (image + text) in 4B, 12B, and 27B variants
+- **Up to 128K context length** for long documents and reasoning tasks
+- **Quantization-aware models** that make even 27B run on a single RTX 3090 (~14 GB VRAM)
+- **Multi-language support** across 140+ languages
+- **Function calling** and structured tool-use capabilities
+
+Gemma 3 is ideal for local prototyping, on-device inference, and edge deployment,  whether you're running on a high-end RTX workstation or a Jetson Orin Nano in the field.
+
+---
+
+## 🛠️ Installation – Ollama on NVIDIA Systems
+
+To run Gemma 3 locally, you'll need to install **Ollama**.
+
+### On Jetson or Linux
+
+Run the following command in your terminal:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+
+### On Windows
+
+Download the installer directly from the official Ollama site:
+
+[https://ollama.com/download](https://ollama.com/download)
+
+Once installed, you can run models via the terminal (`ollama run ...`) or through the local API (`localhost:11434`).
+
+---
+
+## 🚀 Running Gemma 3 with Ollama
+
+Pull and run the desired model size (4B recommended for Jetson):
+
+```bash
+ollama pull gemma3:4b
+ollama run gemma3:4b
+```
+
+For larger variants on RTX-class GPUs:
+
+```bash
+ollama pull gemma3:12b
+ollama run gemma3:12b
+
+ollama pull gemma3:27b-it-qat
+ollama run gemma3:27b-it-qat
+```
+
+Run prompts directly:
+
+```bash
+ollama run gemma3:12b -p "Summarize a research paper in plain English."
+```
+
+For multimodal (image + text) tasks:
+
+```bash
+ollama run gemma3:4b "Describe this image" < ./image.png
+```
+
+
+---
+
+## 🧪 Gemma 2 on Jetson Orin Nano – Google Dev Day Tokyo Demos
+
+If you're working with a Jetson Orin Nano and want to explore the power of **Gemma 2**, this repository provides three easy-to-follow demos showcasing how to run a Small Language Model (SLM) with 2 billion parameters on this device. In my talk at the **Google Gemma 2 Dev Day in Tokyo**, I covered everything step-by-step, from setting up the device to running these demos efficiently.
 
 ## YouTube Video
 This video offers a detailed guide on setting up **Gemma 2** on the Jetson Orin Nano, covering installation, configuration, and execution of the demos. Watch it to get a better understanding of how to replicate the steps on your device:
@@ -10,58 +83,30 @@ This video offers a detailed guide on setting up **Gemma 2** on the Jetson Orin 
 ## Demos
 
 1. **Home Assistant Demo**  
-   This demo showcases a basic home assistant powered by Gemma 2, using Whisper for speech-to-text, FAISS for Retrieval-Augmented Generation (RAG), and Piper for text-to-speech. Gemma 2 runs on port 8080 using `llama.cpp` to process the input and generate responses.
-
-   - Key components:  
-     - Whisper: Transcribes voice input into text.
-     - FAISS: Uses RAG to find relevant context from a set of predefined documents.
-     - Gemma 2: Runs on port 8080, responsible for generating concise and relevant answers based on the input.
-     - Piper: Converts the generated text into speech.
-   - How it works:  
-     When the system detects voice input (indicated by beeps due to the lack of silence detection), it uses Whisper to transcribe the text. FAISS enhances this input with external context, and Gemma 2, running on port 8080 via `llama.cpp`, processes the input and provides a concise response. Finally, Piper converts this response into speech.
+   Uses Whisper, FAISS, Gemma 2 and Piper to build a local voice assistant.
 
 2. **Translation Assistant Demo**  
-   This demo implements a translation assistant that listens to English input, translates it into Japanese, and speaks the translation using Coqui TTS. Gemma 2 also powers this translation process, running on port 8080.
-
-   - Key components:  
-     - Whisper: Transcribes English voice input.
-     - Gemma 2: Translates the input from English to Japanese, running on port 8080 with `llama.cpp`.
-     - Coqui TTS: Synthesizes the translated Japanese text into speech.
-   - How it works:  
-     After receiving and transcribing voice input via Whisper, Gemma 2 translates the text using the model running on port 8080. The translated text is then synthesized into spoken Japanese using Coqui TTS.
+   Translates English to Japanese speech using Whisper, Gemma 2, and Coqui TTS.
 
 3. **Multi-Agent System Demo**  
-   This demo demonstrates a multi-agent setup where two instances of Gemma 2 communicate with each other using different personalities. One instance of Gemma 2 runs on port 8080 and the other on port 8082. Both models, powered by `llama.cpp`, simulate a conversation between two distinct personalities: one creative and one analytical.
-
-   - Key components:  
-     - Gemma 2: Two instances of the model running on ports 8080 and 8082, respectively.
-     - FAISS: Optionally used for memory and enhanced context handling.
-   - How it works:  
-     Two separate instances of Gemma 2 are launched on different ports, with one being more creative and the other more analytical. These instances engage in a simulated conversation, showcasing the multi-agent capabilities of Gemma 2 running on an edge device.
+   Simulates a dialogue between two different personalities using two instances of Gemma 2.
 
 ## Execution
 
-The code is very straightforward to run. It's essentially a Python script with the dependencies listed in `requirements.txt`.
+Install dependencies:
 
-1. Install the dependencies with:
-   ^^^bash
-   pip install -r requirements.txt
-   ^^^
+```bash
+pip install -r requirements.txt
+```
 
-2. Here's what each script does:
-   - `home_assistant.py`: Runs a basic voice-activated assistant using Whisper for speech-to-text, FAISS for context retrieval, and Gemma 2 (on port 8080) for response generation, with Piper for text-to-speech.
-   - `translate.py`: Implements a voice-to-voice translation system from English to Japanese using Whisper for transcription, Gemma 2 (on port 8080) for translation, and Coqui TTS for speech synthesis.
-   - `multi_agent.py`: Runs two instances of Gemma 2 (on ports 8080 and 8082) as a multi-agent system, simulating a conversation between two different personalities.
+Run scripts:
 
-### Assets
-
-There is an `assets` folder containing two `.wav` files (beeps) that signal when you can start and stop speaking. These beeps are used because the home assistant does not implement silence detection. The purpose of this code is to show how a minimal home assistant can be built with just a few lines of code.
-
-### Assets
-
-There is an `assets` folder containing two `.wav` files (beeps) that signal when you can start and stop speaking. These beeps are used because the home assistant does not implement silence detection. The purpose of this code is to show how a minimal home assistant can be built with just a few lines of code.
+- `home_assistant.py`: Voice assistant with Gemma 2 + RAG
+- `translate.py`: English to Japanese voice translation
+- `multi_agent.py`: Dual-agent personality simulation
 
 ## Directory Structure
+
 
 The project is organized as follows:
 
