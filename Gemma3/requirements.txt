@@ -1,0 +1,6 @@
+openai-whisper
+requests
+sounddevice
+numpy
+faiss-cpu
+sentence-transformers 

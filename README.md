@@ -1,16 +1,124 @@
+# Google Gemma Voice Assistant Demo
+
+This repository contains two implementations of a voice assistant using Google's Gemma models:
+
+- **Gemma2**: Original implementation using LLaMA.cpp
+- **Gemma3**: Modern implementation using Ollama with Gemma3n models
+
+## 🚀 Quick Start
+
+### Option 1: Modern Implementation (Recommended)
+
+```bash
+cd Gemma3
+./setup.sh
+python assistant_ollama.py
+```
+
+### Option 2: Original Implementation
+
+```bash
+cd Gemma2
+pip install -r requirements.txt
+python assistant.py
+```
+
+## 📁 Project Structure
+
+```
+├── Gemma2/                 # Original LLaMA.cpp implementation
+│   ├── assistant.py       # Main voice assistant
+│   ├── requirements.txt   # Python dependencies
+│   └── assets/           # Audio files
+│
+├── Gemma3/                # Modern Ollama implementation
+│   ├── assistant_ollama.py # Main voice assistant
+│   ├── demo_text.py       # Text-only demo
+│   ├── test_ollama.py     # Connection test
+│   ├── requirements.txt   # Python dependencies
+│   ├── setup.sh          # Setup script
+│   └── README.md         # Detailed documentation
+│
+└── README.md             # This file
+```
+
+## 🖥️ Platform Compatibility
+
+### Tested Platforms:
+- ✅ **Jetson Nano** (ARM64, Linux)
+- ✅ **Jetson Orin Nano** (ARM64, Linux)
+- ✅ **macOS** (Intel/Apple Silicon)
+- ✅ **Linux** (x86_64, ARM64)
+- ✅ **Windows** (x86_64)
+
+## 🔍 Key Differences
+
+| Feature | Gemma2 (LLaMA.cpp) | Gemma3 (Ollama) |
+|---------|-------------------|-----------------|
+| **Model Management** | Manual setup | Easy with Ollama |
+| **API** | Custom LLaMA.cpp | Standard REST API |
+| **Models** | Gemma2 | Gemma3n (more efficient) |
+| **Installation** | Complex | Simple |
+| **Updates** | Manual | Automatic |
+| **Memory** | Higher usage | Optimized |
+
+## 🎯 Use Cases
+
+### Gemma2 (LLaMA.cpp)
+- Legacy systems
+- Specific LLaMA.cpp requirements
+- Research and development
+
+### Gemma3 (Ollama) - **Recommended**
+- Production deployments
+- Edge devices (Jetson)
+- Easy setup and maintenance
+- Modern Gemma3n models
+
+## 🛠️ Requirements
+
+### Gemma2
+- LLaMA.cpp server running
+- Gemma2 model files
+- Piper TTS (optional)
+
+### Gemma3
+- Ollama installed
+- Internet connection (for model download)
+- ~2GB VRAM (for gemma3n:e2b)
+
+## 📖 Documentation
+
+- **[Gemma2 Documentation](Gemma2/README.md)** - Original implementation details
+- **[Gemma3 Documentation](Gemma3/README.md)** - Modern implementation details
+
+## 🤝 Contributing
+
+Feel free to submit issues and enhancement requests!
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 🙏 Acknowledgments
+
+- Google for the Gemma models
+- Ollama team for the excellent framework
+- NVIDIA for Jetson platform support
+
 # Gemma 3 on NVIDIA RTX & Jetson – Powered by Ollama
 
-Google’s latest open model family, **Gemma 3**, is now available on **Ollama**, with optimized performance for **NVIDIA RTX GPUs** and **Jetson edge devices**.
+Google's latest open model family, **Gemma 3**, is now available on **Ollama**, with optimized performance for **NVIDIA RTX GPUs** and **Jetson edge devices**.
 
-With model sizes ranging from **1B** to **27B parameters**, Gemma 3 brings:
+With model sizes ranging from **1B** to **27B parameters**, Gemma 3 brings:
 
 - **Multimodal capabilities** (image + text) in 4B, 12B, and 27B variants
 - **Up to 128K context length** for long documents and reasoning tasks
-- **Quantization-aware models** that make even 27B run on a single RTX 3090 (~14 GB VRAM)
+- **Quantization-aware models** that make even 27B run on a single RTX 3090 (~14 GB VRAM)
 - **Multi-language support** across 140+ languages
 - **Function calling** and structured tool-use capabilities
 
-Gemma 3 is ideal for local prototyping, on-device inference, and edge deployment,  whether you're running on a high-end RTX workstation or a Jetson Orin Nano in the field.
+Gemma 3 is ideal for local prototyping, on-device inference, and edge deployment, whether you're running on a high-end RTX workstation or a Jetson Orin Nano in the field.
 
 ---
 
@@ -71,9 +179,9 @@ ollama run gemma3:4b "Describe this image" < ./image.png
 
 ---
 
-## 🧪 Gemma 2 on Jetson Orin Nano – Google Dev Day Tokyo Demos
+## 🧪 Gemma 2 on Jetson Orin Nano – Google Dev Day Tokyo Demos
 
-If you're working with a Jetson Orin Nano and want to explore the power of **Gemma 2**, this repository provides three easy-to-follow demos showcasing how to run a Small Language Model (SLM) with 2 billion parameters on this device. In my talk at the **Google Gemma 2 Dev Day in Tokyo**, I covered everything step-by-step, from setting up the device to running these demos efficiently.
+If you're working with a Jetson Orin Nano and want to explore the power of **Gemma 2**, this repository provides three easy-to-follow demos showcasing how to run a Small Language Model (SLM) with 2 billion parameters on this device. In my talk at the **Google Gemma 2 Dev Day in Tokyo**, I covered everything step-by-step, from setting up the device to running these demos efficiently.
 
 ## YouTube Video
 This video offers a detailed guide on setting up **Gemma 2** on the Jetson Orin Nano, covering installation, configuration, and execution of the demos. Watch it to get a better understanding of how to replicate the steps on your device:
@@ -83,13 +191,13 @@ This video offers a detailed guide on setting up **Gemma 2** on the Jetson Orin 
 ## Demos
 
 1. **Home Assistant Demo**  
-   Uses Whisper, FAISS, Gemma 2 and Piper to build a local voice assistant.
+   Uses Whisper, FAISS, Gemma 2 and Piper to build a local voice assistant.
 
 2. **Translation Assistant Demo**  
-   Translates English to Japanese speech using Whisper, Gemma 2, and Coqui TTS.
+   Translates English to Japanese speech using Whisper, Gemma 2, and Coqui TTS.
 
 3. **Multi-Agent System Demo**  
-   Simulates a dialogue between two different personalities using two instances of Gemma 2.
+   Simulates a dialogue between two different personalities using two instances of Gemma 2.
 
 ## Execution
 
@@ -101,7 +209,7 @@ pip install -r requirements.txt
 
 Run scripts:
 
-- `home_assistant.py`: Voice assistant with Gemma 2 + RAG
+- `home_assistant.py`: Voice assistant with Gemma 2 + RAG
 - `translate.py`: English to Japanese voice translation
 - `multi_agent.py`: Dual-agent personality simulation
 
