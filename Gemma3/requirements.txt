@@ -4,5 +4,4 @@ sounddevice
 numpy
 faiss-cpu
 sentence-transformers
-portaudio
 pyaudio 
