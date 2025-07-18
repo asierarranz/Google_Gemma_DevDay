@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Text-based demo of the Ollama assistant without audio requirements
-Compatible with Jetson Nano, Jetson Orin Nano, macOS, Linux, Windows
+Optimized for Jetson Orin Nano
 """
 
 import requests
@@ -84,12 +84,12 @@ def rag_ask(query):
     return ask_ollama(query, context)
 
 def main():
-    print("🤖 Ollama + Gemma3n Assistant Demo")
-    print("Tested on: Jetson Nano, Jetson Orin Nano, macOS, Linux, Windows")
-    print("=" * 60)
+    print("Ollama + Gemma3n Assistant Demo")
+    print("Optimized for Jetson Orin Nano")
+    print("=" * 50)
     print("This is a text-based demo. Type your questions and press Enter.")
     print("Type 'quit' to exit.")
-    print("-" * 60)
+    print("-" * 50)
     
     while True:
         try:
@@ -97,28 +97,28 @@ def main():
             user_input = input("\n🎤 You: ").strip()
             
             if user_input.lower() in ['quit', 'exit', 'q']:
-                print("👋 Goodbye!")
+                print("Goodbye!")
                 break
             
             if not user_input:
-                print("🤖 Assistant: Please say something!")
+                print("Assistant: Please say something!")
                 continue
             
             # Get context from RAG
             context_docs = db.search(user_input)
-            print(f"📚 Context found: {len(context_docs)} relevant documents")
+            print(f"Context found: {len(context_docs)} relevant documents")
             
             # Generate response
-            print("🤔 Thinking...")
+            print("Thinking...")
             response = rag_ask(user_input)
             
-            print(f"🤖 Assistant: {response}")
+            print(f"Assistant: {response}")
             
         except KeyboardInterrupt:
-            print("\n👋 Goodbye!")
+            print("\nGoodbye!")
             break
         except Exception as e:
-            print(f"❌ Error: {e}")
+            print(f"Error: {e}")
             continue
 
 if __name__ == "__main__":

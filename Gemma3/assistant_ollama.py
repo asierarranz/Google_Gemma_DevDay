@@ -39,11 +39,19 @@ db.add_documents(KNOWLEDGE_DOCS)
 
 # Find the device for audio recording by matching part of the device name
 def find_device(device_name_substring):
-    for i, device in enumerate(sd.query_devices()):
-        if device_name_substring.lower() in device['name'].lower():
-            return i
-    # If specific device not found, use default input device
-    return sd.default.device[0]
+    try:
+        devices = sd.query_devices()
+        for i, device in enumerate(devices):
+            if device['max_inputs'] > 0 and device_name_substring.lower() in device['name'].lower():
+                return i
+        # If specific device not found, use first available input device
+        for i, device in enumerate(devices):
+            if device['max_inputs'] > 0:
+                return i
+        # Fallback to default
+        return sd.default.device[0]
+    except:
+        return None
 
 # Play sound (beep) to signal recording start/stop
 def play_sound(sound_file):
@@ -63,11 +71,10 @@ def play_sound(sound_file):
 def record_audio(filename, duration=AUDIO_CONFIG["duration"], fs=AUDIO_CONFIG["sample_rate"]):
     try:
         device_id = find_device("920")  # Try to find Logitech 920
+        if device_id is not None:
+            sd.default.device = device_id
     except:
-        device_id = None  # Use default device if not found
-    
-    if device_id is not None:
-        sd.default.device = device_id
+        pass  # Use default device if not found
     
     play_sound(bip_sound)  # Start beep
     audio = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='int16')
@@ -127,10 +134,10 @@ def text_to_speech(text):
 
 # Main loop for the assistant
 def main():
-    print("🎤 Voice Assistant with Ollama + Gemma3n")
-    print("Tested on: Jetson Nano, Jetson Orin Nano, macOS, Linux, Windows")
+    print("Voice Assistant with Ollama + Gemma3n")
+    print("Optimized for Jetson Orin Nano")
     print("Press Ctrl+C to exit")
-    print("-" * 60)
+    print("-" * 50)
     
     while True:
         try:
@@ -138,24 +145,24 @@ def main():
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
                 record_audio(tmpfile.name)  # Record the audio input
                 transcribed_text = transcribe_audio(tmpfile.name)  # Convert speech to text
-                print(f"🎧 You said: {transcribed_text}")
+                print(f"You said: {transcribed_text}")
                 
                 if transcribed_text.strip():  # Only process if there's actual text
                     response = rag_ask(transcribed_text)  # Generate response using RAG and Ollama
-                    print(f"🤖 Assistant: {response}")
+                    print(f"Assistant: {response}")
                     if response and not response.startswith("Error"):
                         text_to_speech(response)  # Convert response to speech
                 else:
-                    print("🤖 Assistant: I didn't hear anything. Please try again.")
+                    print("Assistant: I didn't hear anything. Please try again.")
                 
                 # Clean up temporary file
                 os.unlink(tmpfile.name)
                 
         except KeyboardInterrupt:
-            print("\n👋 Goodbye!")
+            print("\nGoodbye!")
             break
         except Exception as e:
-            print(f"❌ Error: {e}")
+            print(f"Error: {e}")
             continue
 
 # Entry point of the script

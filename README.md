@@ -1,13 +1,15 @@
-# Google Gemma Voice Assistant Demo
+# Google Gemma Text and Voice Assistant Demo
 
-This repository contains two implementations of a voice assistant using Google's Gemma models:
+This repository contains implementations of text and voice assistants using Google's Gemma models, specifically optimized for the Jetson Orin Nano platform.
 
-- **Gemma2**: Original implementation using LLaMA.cpp
+## Overview
+
 - **Gemma3**: Modern implementation using Ollama with Gemma3n models
+- **Gemma2**: Original implementation using LLaMA.cpp with additional demos
 
-## 🚀 Quick Start
+## Quick Start
 
-### Option 1: Modern Implementation (Recommended)
+### Gemma3 (Recommended)
 
 ```bash
 cd Gemma3
@@ -15,7 +17,7 @@ cd Gemma3
 python assistant_ollama.py
 ```
 
-### Option 2: Original Implementation
+### Gemma2 (Legacy)
 
 ```bash
 cd Gemma2
@@ -23,18 +25,21 @@ pip install -r requirements.txt
 python assistant.py
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── Gemma2/                 # Original LLaMA.cpp implementation
-│   ├── assistant.py       # Main voice assistant
+│   ├── assistant.py       # Voice assistant with RAG
+│   ├── npcservers.py      # Multi-agent NPC conversation demo
+│   ├── translate.py       # English to Japanese translation demo
 │   ├── requirements.txt   # Python dependencies
 │   └── assets/           # Audio files
 │
 ├── Gemma3/                # Modern Ollama implementation
-│   ├── assistant_ollama.py # Main voice assistant
+│   ├── assistant_ollama.py # Voice assistant
 │   ├── demo_text.py       # Text-only demo
 │   ├── test_ollama.py     # Connection test
+│   ├── config.py          # Configuration file
 │   ├── requirements.txt   # Python dependencies
 │   ├── setup.sh          # Setup script
 │   └── README.md         # Detailed documentation
@@ -42,16 +47,12 @@ python assistant.py
 └── README.md             # This file
 ```
 
-## 🖥️ Platform Compatibility
+## Platform Support
 
-### Tested Platforms:
-- ✅ **Jetson Nano** (ARM64, Linux)
-- ✅ **Jetson Orin Nano** (ARM64, Linux)
-- ✅ **macOS** (Intel/Apple Silicon)
-- ✅ **Linux** (x86_64, ARM64)
-- ✅ **Windows** (x86_64)
+**Tested and optimized for:**
+- Jetson Orin Nano (ARM64, Linux)
 
-## 🔍 Key Differences
+## Key Differences
 
 | Feature | Gemma2 (LLaMA.cpp) | Gemma3 (Ollama) |
 |---------|-------------------|-----------------|
@@ -62,20 +63,21 @@ python assistant.py
 | **Updates** | Manual | Automatic |
 | **Memory** | Higher usage | Optimized |
 
-## 🎯 Use Cases
+## Use Cases
 
 ### Gemma2 (LLaMA.cpp)
-- Legacy systems
-- Specific LLaMA.cpp requirements
+- Voice assistant with RAG
+- Multi-agent NPC conversation simulation
+- English to Japanese translation
 - Research and development
 
-### Gemma3 (Ollama) - **Recommended**
-- Production deployments
-- Edge devices (Jetson)
+### Gemma3 (Ollama) - Recommended
+- Production deployments on Jetson Orin Nano
 - Easy setup and maintenance
 - Modern Gemma3n models
+- Text and voice interfaces
 
-## 🛠️ Requirements
+## Requirements
 
 ### Gemma2
 - LLaMA.cpp server running
@@ -87,20 +89,20 @@ python assistant.py
 - Internet connection (for model download)
 - ~2GB VRAM (for gemma3n:e2b)
 
-## 📖 Documentation
+## Documentation
 
 - **[Gemma2 Documentation](Gemma2/README.md)** - Original implementation details
 - **[Gemma3 Documentation](Gemma3/README.md)** - Modern implementation details
 
-## 🤝 Contributing
+## Contributing
 
-Feel free to submit issues and enhancement requests!
+Feel free to submit issues and enhancement requests.
 
-## 📄 License
+## License
 
 This project is open source and available under the MIT License.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Google for the Gemma models
 - Ollama team for the excellent framework

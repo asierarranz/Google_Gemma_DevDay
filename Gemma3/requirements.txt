@@ -3,4 +3,6 @@ requests
 sounddevice
 numpy
 faiss-cpu
-sentence-transformers 
+sentence-transformers
+portaudio
+pyaudio 

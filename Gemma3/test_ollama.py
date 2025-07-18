@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Test script to verify Ollama connection and model functionality
-Compatible with Jetson Nano, Jetson Orin Nano, macOS, Linux, Windows
+Optimized for Jetson Orin Nano
 """
 
 import requests
@@ -13,14 +13,14 @@ def test_ollama_connection():
         response = requests.get("http://127.0.0.1:11434/api/tags")
         if response.status_code == 200:
             models = response.json().get('models', [])
-            print("✅ Ollama server is running")
-            print(f"📦 Available models: {[m['name'] for m in models]}")
+            print("Ollama server is running")
+            print(f"Available models: {[m['name'] for m in models]}")
             return True
         else:
-            print(f"❌ Ollama server error: {response.status_code}")
+            print(f"Ollama server error: {response.status_code}")
             return False
     except requests.exceptions.ConnectionError:
-        print("❌ Cannot connect to Ollama server")
+        print("Cannot connect to Ollama server")
         print("   Make sure to run: ollama serve")
         return False
 
@@ -45,22 +45,22 @@ def test_model_generation(model_name="gemma3n:e2b"):
         
         if response.status_code == 200:
             result = response.json()
-            print(f"✅ Model {model_name} is working")
-            print(f"🤖 Response: {result.get('response', 'No response')}")
+            print(f"Model {model_name} is working")
+            print(f"Response: {result.get('response', 'No response')}")
             return True
         else:
-            print(f"❌ Model generation error: {response.status_code}")
+            print(f"Model generation error: {response.status_code}")
             print(f"   Response: {response.text}")
             return False
             
     except Exception as e:
-        print(f"❌ Error testing model: {e}")
+        print(f"Error testing model: {e}")
         return False
 
 def main():
-    print("🧪 Testing Ollama Setup")
-    print("Tested on: Jetson Nano, Jetson Orin Nano, macOS, Linux, Windows")
-    print("=" * 60)
+    print("Testing Ollama Setup")
+    print("Optimized for Jetson Orin Nano")
+    print("=" * 50)
     
     # Test connection
     if not test_ollama_connection():
@@ -73,7 +73,7 @@ def main():
         return
     
     print()
-    print("🎉 All tests passed! Your Ollama setup is ready.")
+    print("All tests passed! Your Ollama setup is ready.")
     print("   You can now run: python assistant_ollama.py")
     print("   Or try the text demo: python demo_text.py")
 
